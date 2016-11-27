@@ -8,6 +8,29 @@
 
 import Vapor
 
+enum TextSize: Int {
+  case small = 1
+  case Medium
+  case Big
+}
+
+enum TextStyle: Int {
+  case light = 1
+  case regular
+  case medium
+  case bold
+}
+
+enum Mode: Int {
+  case light = 1
+  case dark
+}
+
+enum Orientation: Int {
+  case portrait = 1
+  case landscape
+}
+
 final class Setting: Model {
   
   var id: Node?
