@@ -18,13 +18,11 @@ And not just those websites, today you can find recommendation system everywhere
 
 
 ### 🤖 Algorithm
-The algorithm is based on the co-occurrence of preferences between the user interface, actually is a way to find similar users in terms on user interface components preferences.
+The algorithm is based on the co-occurrence of user interface preferences between users on the system, actually is a way to find similar users in terms on user interface components preferences.
 
-The struct the represent the user preference called: UIPreference
-
+The struct that represent the user preference called: UIPreference
 
 ```swift
-
 struct UIPreference {
   var id: Int
   var textSize: TextSize
@@ -81,24 +79,87 @@ enum DisplayZoom: String {
 }
 ```
 
-UIPreference knows to represent himself as a boolean vector of user preferences let's call it Vp
+UIPreference struct knows to represent himself as a boolean vector of user preferences let's call it **Pv**.
+For example:
 
 | User id|Text Size Small|Text Size Medium|Text Size Big|Text Style light|Test Style regular|Test Style medium|Test Style bold|Text Color light|Text Color sepia|Text Color dark|Language English|Device's language|Display standard|Display zoomed|Night Shift|Automatic Brithness|Brithness low|Brithness medium|Brithness high|Backgroun color white|Backgroun color sepia|Backgroun color night|Mode Light|Mode Dark|Orientation portrait|Orientation landscape|
 |:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|
 | 1 |❎ |✅ |❎ |❎  |✅ |❎ |❎ |❎ |❎ |✅ |✅  |❎ |✅ |❎ |✅  |✅ |❎ |❎ |❎  |❎  |✅ |❎  |✅ |❎ |✅ |❎  |
 
+So all the data on the Data-base looks like that:
+
+| User id|Text Size Small|Text Size Medium|Text Size Big|Text Style light|Test Style regular|Test Style medium|Test Style bold|Text Color light|Text Color sepia|Text Color dark|Language English|Device's language|Display standard|Display zoomed|Night Shift|Automatic Brithness|Brithness low|Brithness medium|Brithness high|Backgroun color white|Backgroun color sepia|Backgroun color night|Mode Light|Mode Dark|Orientation portrait|Orientation landscape|
+|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|
+| 1 |❎ |✅ |❎ |❎  |✅ |❎ |❎ |❎ |❎ |✅ |✅  |❎ |✅ |❎ |✅  |✅ |❎ |❎ |❎  |❎  |✅ |❎  |✅ |❎ |✅ |❎ |
+| 2 |✅ |✅ |✅ |❎  |✅ |❎ |❎ |❎ |❎ |✅ |✅  |❎ |✅ |❎ |✅  |✅ |❎ |❎ |❎  |❎  |✅ |❎  |✅ |❎ |✅ |❎ |
+| 3 |✅ |❎ |❎ |❎  |✅ |❎ |❎ |❎ |❎ |✅ |✅  |❎ |✅ |❎ |✅  |✅ |❎ |❎ |❎  |❎  |✅ |❎  |✅ |❎ |✅ |❎ |
+| 4 |
+| 5 |
 
 
+Let's call to the Data-bast table of all preferences **T**
 
-M = Table (Matrix) of all preferences for the users in the systems.
-Rp = A vactor of recommendations for a specific users.
+The collaborative filtering algorithm should returns a vectro of user interface recommendations for a specific user let's call it Rv
+
 The equation:
 
-
+**Rv = [T**t**T]Pv**
 
 
 ### ✍️ API
 
+####Get All the users preferences.
+
+Method: GET
+
+URL:    /all
+
+Rsponse: Array of JSON the present UI Preference.
+
+
+####Get user preference by user id.
+
+Method: GET
+
+URL:    /user_id/<userid>
+
+Rsponse: JSON the present UI Preference.
+
+####Get default user preferences (for new user).
+
+Method: GET
+
+URL:    /default_preference
+
+Rsponse: JSON the present UI Preference.
+
+
+####Update user preference..
+
+Method: POST
+
+URL:    /update_preference
+Parameters: JSON the present UI Preference
+
+Rsponse: JSON the present UI Preference aftar updated.
+
+
+####Get recommendation for user (by user id)
+
+Method: GET
+
+URL:    /recommendations/user_id/<userid>
+
+Rsponse: JSON the present recommendation UI Preference.
+
+
+####Get Data-Base version
+
+Method: GET
+
+URL:    /db_version
+
+Rsponse: String with the data-base version or "No db connection".
 
 
 ## 📖 Documentation
@@ -111,3 +172,5 @@ Visit the Vapor web framework's [documentation](http://docs.vapor.codes) for ins
 The server hosted on [Heroku](https://www.heroku.com/).
 
 Based on a web framework and server for Swift [Vapor](https://vapor.codes).
+
+[PostgreSQL](https://www.postgresql.org/) - Open source object-relational database system.
