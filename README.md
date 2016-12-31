@@ -11,7 +11,7 @@ Not so much wisdom of the crowd, just a matter of finding popular things, it wil
 It's more about finding the few people out there that have very similar taste like yours, and then recommending things that they felt, it's actually the wisdom of you.
 
 
-### 🤝 Introduce some usese for collaborative filtering 
+### 🤝 Introduce some uses for collaborative filtering 
 
 The best examples for the use of recommenders is the eCommerce websites such as Amazon (its estimated that about 60 percent of their sales come from recommendations in various places on thier site.) Once you login they have a lot of recommendations for you.
 And not just those websites, today you can find recommendation system everywhere, Starting from Netflix that recomends you the next movie you may like to dating websites that recomend you the perfect partner for you, and many more.
@@ -108,6 +108,7 @@ The equation:
 
 
 ## 📖 API Documentation
+The base URL: https://uicollaborativefiltering.herokuapp.com/
 
 ####Get All the users preferences.
 
@@ -126,7 +127,7 @@ URL:    /user_id/<userid>
 
 Rsponse: JSON the present UI Preference.
 
-####Get default user preferences (for new user).
+####Get default user preferences (This call create new user in the database.).
 
 Method: GET
 
