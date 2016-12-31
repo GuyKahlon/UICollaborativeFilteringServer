@@ -8,28 +8,7 @@
 
 import Vapor
 
-enum TextSize: Int {
-  case small = 1
-  case Medium
-  case Big
-}
 
-enum TextStyle: Int {
-  case light = 1
-  case regular
-  case medium
-  case bold
-}
-
-enum Mode: Int {
-  case light = 1
-  case dark
-}
-
-enum Orientation: Int {
-  case portrait = 1
-  case landscape
-}
 
 final class Setting: Model {
   
@@ -60,8 +39,8 @@ final class Setting: Model {
 
   init(node: Node, in context: Context) throws {
     id = try node.extract("id")
-    textSize = try node.extract("textSize")
-    textStyle = try node.extract("textStyle")
+    textSize = try node.extract("textsize")
+    textStyle = try node.extract("textstyle")
     mode = try node.extract("mode")
     orientation = try node.extract("orientation")
   }
@@ -77,17 +56,17 @@ final class Setting: Model {
   }
   
   static func prepare(_ database: Database) throws {
-    try database.create("settings") { users in
+    try database.create("settingss") { users in
       users.id()
-      users.string("textSize")
-      users.string("textStyle")
+      users.string("textsize")
+      users.string("textstyle")
       users.string("mode")
       users.string("orientation")
     }
   }
   
   static func revert(_ database: Database) throws {
-    try database.delete("settings")
+    try database.delete("settingss")
   }
 }
 

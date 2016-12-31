@@ -31,7 +31,7 @@ final class Acronym: Model {
   }
   
   static func prepare(_ database: Database) throws {
-    try database.create("acronyms") { users in
+    try database.create("acronymss") { users in
       users.id()
       users.string("short")
       users.string("long")
@@ -39,7 +39,7 @@ final class Acronym: Model {
   }
   
   static func revert(_ database: Database) throws {
-    try database.delete("acronyms")
+    try database.delete("acronymss")
   }
 }
 
