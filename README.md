@@ -11,13 +11,14 @@ Not so much wisdom of the crowd, just a matter of finding popular things, it wil
 It's more about finding the few people out there that have very similar taste yours and then recommending things that they felt, it's actually the wisdom of you.
 
 
-### 🤝 Interduce some usese for collaborative filtering 
+### 🤝 Introduce some usese for collaborative filtering 
 
 The best examples of the use of recommenders is the eCommerce websites such as Amazon (its estimated that about 60 percent of their sales come from recommendations in various places on thier site.) Once you login they have a lot of recommendations for you.
 And not just those websites, today you can find recommendation system everywhere, Starting from Netflix that recomends for you about your next movie to dating websites that recomend for you about the perfect partner, and many more.
 
 
 ### 🤖 Algorithm
+
 The algorithm is based on the co-occurrence of user interface preferences between users on the system, actually is a way to find similar users in terms on user interface components preferences.
 
 The struct that represent the user preference called: UIPreference
@@ -79,7 +80,7 @@ enum DisplayZoom: String {
 }
 ```
 
-UIPreference struct knows to represent himself as a boolean vector of user preferences let's call it **Pv**.
+UIPreference struct knows to represent himself as a boolean vector of user preferences let's call it **Pv** (we will use it in the equation further).
 For example:
 
 | User id|Text Size Small|Text Size Medium|Text Size Big|Text Style light|Test Style regular|Test Style medium|Test Style bold|Text Color light|Text Color sepia|Text Color dark|Language English|Device's language|Display standard|Display zoomed|Night Shift|Automatic Brithness|Brithness low|Brithness medium|Brithness high|Backgroun color white|Backgroun color sepia|Backgroun color night|Mode Light|Mode Dark|Orientation portrait|Orientation landscape|
@@ -99,7 +100,7 @@ So all the data on the Data-base looks like that:
 
 Let's call to the Data-bast table of all preferences **T**
 
-The collaborative filtering algorithm should returns a vectro of user interface recommendations for a specific user let's call it Rv
+The collaborative filtering algorithm should returns a vectro of user interface recommendations for a specific user let's call it **Rv**
 
 The equation:
 
