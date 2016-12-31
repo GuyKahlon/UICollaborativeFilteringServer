@@ -1,6 +1,6 @@
 import Vapor
 import VaporPostgreSQL
-import Accelerate
+//import Accelerate
 
 // MARK: - Init Droplet 
 
@@ -217,40 +217,40 @@ drop.post("update_preference") { request in
 drop.get("recommendations/user_id",":userID") { request in
  
   
-  func calculateRecomendations(_ B: [Double], row: UInt, column: UInt, Pv: [Double]) -> [Double] {
-    
-    var Btranspose = [Double](repeating: 0.0, count: B.count)
-    vDSP_mtransD(B, 1, &Btranspose, 1, column, row)
-    
-    
-    let rows_of_matrix_BT = column
-    let columns_of_matrix_B = column
-    let columns_of_matrix_BT_or_rows_of_matrix_B = row
-    
-    var BTB = [Double](repeating: 0.0, count: Int(column) * Int(column))
-    
-    vDSP_mmulD(Btranspose, 1,
-               B, 1,
-               &BTB, 1,
-               rows_of_matrix_BT,
-               columns_of_matrix_B,
-               columns_of_matrix_BT_or_rows_of_matrix_B)
-    
-    
-    
-    var Rv = [Double](repeating: 0.0, count: Int(column))
-    
-    vDSP_mmulD(BTB, 1,
-               Pv, 1,
-               &Rv, 1,
-               column,
-               1,
-               column)
-    
-    
-    
-    return Rv
-  }
+//  func calculateRecomendations(_ B: [Double], row: UInt, column: UInt, Pv: [Double]) -> [Double] {
+//    
+//    var Btranspose = [Double](repeating: 0.0, count: B.count)
+//    vDSP_mtransD(B, 1, &Btranspose, 1, column, row)
+//    
+//    
+//    let rows_of_matrix_BT = column
+//    let columns_of_matrix_B = column
+//    let columns_of_matrix_BT_or_rows_of_matrix_B = row
+//    
+//    var BTB = [Double](repeating: 0.0, count: Int(column) * Int(column))
+//    
+//    vDSP_mmulD(Btranspose, 1,
+//               B, 1,
+//               &BTB, 1,
+//               rows_of_matrix_BT,
+//               columns_of_matrix_B,
+//               columns_of_matrix_BT_or_rows_of_matrix_B)
+//    
+//    
+//    
+//    var Rv = [Double](repeating: 0.0, count: Int(column))
+//    
+//    vDSP_mmulD(BTB, 1,
+//               Pv, 1,
+//               &Rv, 1,
+//               column,
+//               1,
+//               column)
+//    
+//    
+//    
+//    return Rv
+//  }
   
   /*
   1. Get the user preferences
@@ -271,16 +271,24 @@ drop.get("recommendations/user_id",":userID") { request in
     var table = userPreference.vector
     table += allPreferences.map { $0.vector }.flatMap { $0 }
     
-    let res = calculateRecomendations(table,
-                                      row: UInt(allPreferences.count + 1),
-                                      column: 25,
-                                      Pv: userPreference.vector)
     
-    let userRecommendationVector = Array(res[0..<25])
+    return try JSON(node: [
+      "count" : String(allPreferences.count + 1),
+      "table" : table.makeNode()
+    ])
     
-    let userRecommendatio = UIPreference8(id: nil, vector: userRecommendationVector, preference: userPreference)
+//    let res = calculateRecomendations(table,
+//                                      row: UInt(allPreferences.count + 1),
+//                                      column: 25,
+//                                      Pv: userPreference.vector)
+//    
+//    let userRecommendationVector = Array(res[0..<25])
+//    
+    //let userRecommendatio = UIPreference8(id: nil, vector: userRecommendationVector, preference: userPreference)
 
-    return try JSON(node: userRecommendatio.makeNode())
+//    return try JSON(node: userRecommendatio.makeNode())
+    
+    //return try JSON(node: table.makeNode())
   }
   
   return "Error retrieving parameters."
