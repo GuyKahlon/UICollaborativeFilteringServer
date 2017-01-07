@@ -228,13 +228,15 @@ enum Orientation: String {
     var n1 = vector.0
     var n2 = vector.1
 
-    
     switch preference.orientation {
     case .portrait:
       n1 -= 10
     case .landscape:
       n2 -= 10
     }
+    
+    n1 = abs(n1)
+    n2 = abs(n2)
     
     let arr = [n1, n2]
     let max = arr.max()!
@@ -249,7 +251,6 @@ enum Orientation: String {
     default:
       fatalError()
     }
-
   }
 }
 
