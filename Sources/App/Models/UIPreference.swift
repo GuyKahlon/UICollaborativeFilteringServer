@@ -25,38 +25,27 @@ enum TextSize: String {
   }
   
   static func from(vector: (Double, Double, Double), preference: UIPreference8) -> TextSize {
-   
-    var n1 = vector.0
-    var n2 = vector.1
-    var n3 = vector.2
     
-    switch preference.textSize {
-    case .small:
-      n1 -= 10
-      
-    case .medium:
-      n2 -= 10
-      
-    case .big:
-      n3 -= 10
-    }
-    
-    if n1 >= n2 && n1 >= n3 {
-        return .small
-    }
+    let n1 = vector.0
+    let n2 = vector.1
+    let n3 = vector.2
     
     
-    if n2 >= n1 && n2 >= n3 {
+    let arr = [n1, n2, n3]
+    let maxElement = arr.max()!
+    
+    let maxIndex = arr.index { $0 == maxElement }!
+    
+    switch maxIndex {
+    case 0:
+      return .small
+    case 1:
       return .medium
-    }
-
-    
-    if n3 >= n1 && n3 >= n2 {
+    case 2:
       return .big
+    default:
+      fatalError()
     }
-    
-    fatalError()
-    
   }
 }
 
@@ -81,27 +70,16 @@ enum TextStyle: String {
   
   static func from(vector: (Double, Double, Double, Double), preference: UIPreference8) -> TextStyle {
     
-    var n1 = vector.0
-    var n2 = vector.1
-    var n3 = vector.2
-    var n4 = vector.3
-    
-    switch preference.textStyle {
-    case .light:
-      n1 -= 10
-    case .regular:
-      n2 -= 10
-    case .medium:
-      n3 -= 10
-    case .bold:
-      n4 -= 10
-    }
+    let n1 = vector.0
+    let n2 = vector.1
+    let n3 = vector.2
+    let n4 = vector.3
     
     let arr = [n1, n2, n3, n4]
     let max = arr.max()!
     
     let index = arr.index { $0 == max }!
-  
+    
     switch index {
     case 0:
       return .light
@@ -135,19 +113,9 @@ enum TextColor: String {
   
   static func from(vector: (Double, Double, Double), preference: UIPreference8) -> TextColor {
     
-    var n1 = vector.0
-    var n2 = vector.1
-    var n3 = vector.2
-
-    
-    switch preference.textColor {
-    case .light:
-      n1 -= 10
-    case .sepia:
-      n2 -= 10
-    case .dark:
-      n3 -= 10
-    }
+    let n1 = vector.0
+    let n2 = vector.1
+    let n3 = vector.2
     
     let arr = [n1, n2, n3]
     let max = arr.max()!
@@ -182,17 +150,9 @@ enum Mode: String {
   
   static func from(vector: (Double, Double), preference: UIPreference8) -> Mode {
     
-    var n1 = vector.0
-    var n2 = vector.1
-
+    let n1 = vector.0
+    let n2 = vector.1
     
-    
-    switch preference.mode {
-    case .light:
-      n1 -= 10
-    case .dark:
-      n2 -= 10
-    }
     
     let arr = [n1, n2]
     let max = arr.max()!
@@ -225,18 +185,8 @@ enum Orientation: String {
   
   static func from(vector: (Double, Double), preference: UIPreference8) -> Orientation {
     
-    var n1 = vector.0
-    var n2 = vector.1
-
-    switch preference.orientation {
-    case .portrait:
-      n1 -= 10
-    case .landscape:
-      n2 -= 10
-    }
-    
-    n1 = abs(n1)
-    n2 = abs(n2)
+    let n1 = vector.0
+    let n2 = vector.1
     
     let arr = [n1, n2]
     let max = arr.max()!
@@ -251,6 +201,7 @@ enum Orientation: String {
     default:
       fatalError()
     }
+    
   }
 }
 
@@ -272,19 +223,10 @@ enum BackgroundColor: String {
   
   static func from(vector: (Double, Double, Double), preference: UIPreference8) -> BackgroundColor {
     
-    var n1 = vector.0
-    var n2 = vector.1
-    var n3 = vector.2
+    let n1 = vector.0
+    let n2 = vector.1
+    let n3 = vector.2
     
-    
-    switch preference.backgroundColor {
-    case .white:
-      n1 -= 10
-    case .sepia:
-      n2 -= 10
-    case .night:
-      n3 -= 10
-    }
     
     let arr = [n1, n2, n3]
     let max = arr.max()!
@@ -319,16 +261,9 @@ enum DisplayZoom: String {
   
   static func from(vector: (Double, Double), preference: UIPreference8) -> DisplayZoom {
     
-    var n1 = vector.0
-    var n2 = vector.1
-
+    let n1 = vector.0
+    let n2 = vector.1
     
-    switch preference.displayZoom {
-    case .standard:
-      n1 -= 10
-    case .zoomed:
-      n2 -= 10
-    }
     
     let arr = [n1, n2]
     let max = arr.max()!
@@ -380,10 +315,10 @@ extension Float {
 extension Bool {
   
   static func from(vector: (Double)) -> Bool {
-    switch vector {
-    case (0.0):
+    
+    if vector > 0.0 {
       return true
-    default:
+    } else {
       return false
     }
   }
@@ -503,7 +438,7 @@ final class UIPreference8: Model {
     v.append(contentsOf: textSize.vactor)                  // 0-2
     v.append(contentsOf: textStyle.vactor)                 // 3-6
     v.append(contentsOf: textColor.vactor)                 // 7-9
-    v.append(contentsOf: language == true ? [1] : [0])     // 10
+    v.append(contentsOf: language ? [1] : [0])     // 10
     v.append(contentsOf: displayZoom.vactor)               // 11-12
     
     v.append(contentsOf: nightShift ? [1] : [0])           // 13

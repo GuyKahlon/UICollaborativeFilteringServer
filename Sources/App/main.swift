@@ -5,67 +5,11 @@ import VaporPostgreSQL
 // MARK: - Init Droplet 
 
 let drop = Droplet(
-  preparations: [UIPreference8.self],
+  preparations: [UIPreference8.self, Event.self],
   providers: [VaporPostgreSQL.Provider.self]
 )
 
 // MARK: - Data Base Operations
-
-
-/**
- 
- Create UIPreference for user withput saving
-
-*/
-
-drop.get("model") { request in
-
-  let preference = UIPreference8(
-    textSize: .small,
-    textStyle: .regular,
-    textColor: .dark,
-    mode: .light,
-    orientation: .portrait,
-    backgroundColor: .white,
-    displayZoom: .standard,
-    brightness: 0.5,
-    automaticBrightness: false,
-    nightShift: true,
-    language: true
-  )
-  
-  let json = try preference.makeJSON()
-  return json
-}
-
-
-/**
- 
- Create Defualt UIPreference for user and save it
- return all UIPreference from the DB
- 
-*/
- 
-drop.get("test") { request in
-  
-  var preference = UIPreference8(
-    textSize: .small,
-    textStyle: .regular,
-    textColor: .dark,
-    mode: .light,
-    orientation: .portrait,
-    backgroundColor: .white,
-    displayZoom: .standard,
-    brightness: 0.5,
-    automaticBrightness: false,
-    nightShift: true,
-    language: true
-  )
-  
-  try preference.save()
-
-  return try JSON(node: UIPreference8.all().makeNode())
-}
 
 /*
  
@@ -142,17 +86,6 @@ drop.get("default_preference") { request in
  Update UIPreference 
 
 */
-
-
-
-//drop.post("posttest") { request in
-//  
-//  print(request.json ?? "Empty")
-// 
-//  return try JSON(node: [
-//    "message" : "Hello, Vapor JSON !!!"
-//    ])
-//}
 
 drop.post("update_preference") { request in
   
@@ -360,17 +293,17 @@ drop.get("recommendations/user_id",":userID") { request in
 //}
 //
 ////Update the first
-////8080/update?=textSize=2
-//drop.get("update") { request in
-//  
-//  guard var first = try UIPreference.query().first(), let textSize = request.data["textSize"]?.int else {
-//    throw Abort.badRequest
-//  }
-//  
-//  first.textSize = "1"//TextSize(rawValue: textSize)!.rawValue
-//  try first.save()
-//  return first
-//}
+////8080/send_event?eventType=2
+drop.get("send_event") { request in
+  
+  guard let eventTypeString = request.data["eventType"]?.string,
+    let eventType = EventType(rawValue: eventTypeString) else {
+    throw Abort.badRequest
+  }
+  var event = Event(eventType: eventType)
+  try event.save()
+  return try JSON(node: event.makeNode())
+}
 //
 ////Delete
 //
@@ -381,7 +314,52 @@ drop.get("recommendations/user_id",":userID") { request in
 //  return try JSON(node: UIPreference.all().makeNode())
 //}
 
+//drop.get("test") { request in
+//
+//  var preference = UIPreference8(
+//    textSize: .small,
+//    textStyle: .regular,
+//    textColor: .dark,
+//    mode: .light,
+//    orientation: .portrait,
+//    backgroundColor: .white,
+//    displayZoom: .standard,
+//    brightness: 0.5,
+//    automaticBrightness: false,
+//    nightShift: true,
+//    language: true
+//  )
+//
+//  try preference.save()
+//
+//  return try JSON(node: UIPreference8.all().makeNode())
+//}
 
+/**
+ 
+ Create UIPreference for user withput saving
+ 
+ */
+
+//drop.get("model") { request in
+//  
+//  let preference = UIPreference8(
+//    textSize: .small,
+//    textStyle: .regular,
+//    textColor: .dark,
+//    mode: .light,
+//    orientation: .portrait,
+//    backgroundColor: .white,
+//    displayZoom: .standard,
+//    brightness: 0.5,
+//    automaticBrightness: false,
+//    nightShift: true,
+//    language: true
+//  )
+//  
+//  let json = try preference.makeJSON()
+//  return json
+//}
 
 // MARK: - Utilities
 
@@ -404,6 +382,12 @@ drop.get("db_version") { request in
   }
 }
 
+/**
+ 
+ Create Defualt UIPreference for user and save it
+ return all UIPreference from the DB
+ 
+ */
 
 
 // MARK: - Run
