@@ -367,7 +367,7 @@ drop.get("send_event") { request in
 
 drop.get { request in
   return try JSON(node: [
-      "message" : "Welcome User Interface - Recommendation System Collaborative Filtering Study Project"
+      "message" : "Welcome User Interface - Recommendation System Collaborative Filtering Study Project (And Analytics)"
     ])
 }
 
