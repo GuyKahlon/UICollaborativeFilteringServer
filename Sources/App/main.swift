@@ -5,7 +5,7 @@ import VaporPostgreSQL
 // MARK: - Init Droplet 
 
 let drop = Droplet(
-  preparations: [UIPreference8.self, Event.self],
+  preparations: [UIPreference8.self, Event.self, UsageEvent.self],
   providers: [VaporPostgreSQL.Provider.self]
 )
 
@@ -310,9 +310,34 @@ drop.get("send_event") { request in
 
 drop.get("all_events") { request in
   return try JSON(node:
+    Event.all().makeNode()
+  )
+}
+
+drop.get("all_events") { request in
+  return try JSON(node:
     UIPreference8.all().makeNode()
   )
 }
+
+drop.get("send_usageevent") { request in
+  
+  guard let eventTypeString = request.data["eventType"]?.string,
+    let eventType = EventType(rawValue: eventTypeString) else {
+      throw Abort.badRequest
+  }
+  var event = UsageEvent(eventType: eventType)
+  try event.save()
+  return try JSON(node: event.makeNode())
+}
+
+drop.get("all_usageevent") { request in
+  return try JSON(node:
+    UsageEvent.all().makeNode()
+  )
+}
+
+
 //
 ////Delete
 //
@@ -376,7 +401,7 @@ drop.get("all_events") { request in
 
 drop.get { request in
   return try JSON(node: [
-      "message" : "Welcome User Interface - Recommendation System Collaborative Filtering Study Project (And Analytics)."
+      "message" : "Welcome User Interface - Recommendation System Collaborative Filtering Study Project (And Analytics)"
     ])
 }
 

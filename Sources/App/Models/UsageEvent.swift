@@ -1,13 +1,14 @@
+//
+//  UsageEvent.swift
+//  ToDoServer
+//
+//  Created by Guy Kahlon on 1/20/17.
+//
+//
+
 import Vapor
 
-enum EventType: String {
-  case startApplication
-  case manualEditPreference
-  case acceptRecommendation
-  case rejectRecommendation
-}
-
-final class Event: Model {
+final class UsageEvent: Model {
   
   var id: Node?
   var exists: Bool = false
@@ -28,20 +29,21 @@ final class Event: Model {
     return try Node(node: [
       "id": id,
       "eventype": eventType.rawValue
-    ])
+      ])
   }
   
   static func prepare(_ database: Database) throws {
-    try database.create("events") { users in
+    try database.create("usageevents") { users in
       users.id()
       users.string("eventype")
     }
   }
   
   static func revert(_ database: Database) throws {
-    try database.delete("events")
+    try database.delete("usageevents")
   }
 }
+
 
 
 
