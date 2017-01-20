@@ -307,16 +307,9 @@ drop.get("send_event") { request in
   return try JSON(node: event.makeNode())
 }
 
-
 drop.get("all_events") { request in
   return try JSON(node:
     Event.all().makeNode()
-  )
-}
-
-drop.get("all_events") { request in
-  return try JSON(node:
-    UIPreference8.all().makeNode()
   )
 }
 
