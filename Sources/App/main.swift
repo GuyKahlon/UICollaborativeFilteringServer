@@ -292,8 +292,10 @@ drop.get("recommendations/user_id",":userID") { request in
 //  return try JSON(node: node)
 //}
 //
-////Update the first
-////8080/send_event?eventType=2
+
+
+// MARK: - Statistics
+//8080/send_event?eventType=2
 drop.get("send_event") { request in
   
   guard let eventTypeString = request.data["eventType"]?.string,
@@ -303,6 +305,13 @@ drop.get("send_event") { request in
   var event = Event(eventType: eventType)
   try event.save()
   return try JSON(node: event.makeNode())
+}
+
+
+drop.get("all_events") { request in
+  return try JSON(node:
+    UIPreference8.all().makeNode()
+  )
 }
 //
 ////Delete
@@ -367,7 +376,7 @@ drop.get("send_event") { request in
 
 drop.get { request in
   return try JSON(node: [
-      "message" : "Welcome User Interface - Recommendation System Collaborative Filtering Study Project (And Analytics)"
+      "message" : "Welcome User Interface - Recommendation System Collaborative Filtering Study Project (And Analytics)."
     ])
 }
 
