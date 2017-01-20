@@ -8,7 +8,7 @@
 
 import Vapor
 
-final class UsageEvent: Model {
+final class UsageEventItem: Model {
   
   var id: Node?
   var exists: Bool = false
@@ -28,19 +28,19 @@ final class UsageEvent: Model {
   public func makeNode(context: Context) throws -> Node {
     return try Node(node: [
       "id": id,
-      "eventype": eventType.rawValue
+      "eventtype": eventType.rawValue
       ])
   }
   
   static func prepare(_ database: Database) throws {
-    try database.create("usageevents") { users in
+    try database.create("usageeventitems") { users in
       users.id()
-      users.string("eventype")
+      users.string("eventtype")
     }
   }
   
   static func revert(_ database: Database) throws {
-    try database.delete("usageevents")
+    try database.delete("usageeventitems")
   }
 }
 

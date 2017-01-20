@@ -7,7 +7,7 @@ enum EventType: String {
   case rejectRecommendation
 }
 
-final class Event: Model {
+final class EventItem: Model {
   
   var id: Node?
   var exists: Bool = false
@@ -27,19 +27,19 @@ final class Event: Model {
   public func makeNode(context: Context) throws -> Node {
     return try Node(node: [
       "id": id,
-      "eventype": eventType.rawValue
+      "eventtype": eventType.rawValue
     ])
   }
   
   static func prepare(_ database: Database) throws {
-    try database.create("events") { users in
+    try database.create("eventitems") { users in
       users.id()
-      users.string("eventype")
+      users.string("eventtype")
     }
   }
   
   static func revert(_ database: Database) throws {
-    try database.delete("events")
+    try database.delete("eventitems")
   }
 }
 

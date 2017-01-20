@@ -5,7 +5,7 @@ import VaporPostgreSQL
 // MARK: - Init Droplet 
 
 let drop = Droplet(
-  preparations: [UIPreference8.self, Event.self, UsageEvent.self],
+  preparations: [UIPreference8.self, EventItem.self, UsageEventItem.self],
   providers: [VaporPostgreSQL.Provider.self]
 )
 
@@ -303,7 +303,7 @@ drop.get("send_event",":eventType") { request in
     let eventType = EventType(rawValue: eventTypeString) else {
     throw Abort.badRequest
   }
-  var event = Event(eventType: eventType)
+  var event = EventItem(eventType: eventType)
   try event.save()
   return try JSON(node: event.makeNode())
 }
@@ -311,25 +311,25 @@ drop.get("send_event",":eventType") { request in
 
 drop.get("all_events") { request in
   return try JSON(node:
-    Event.all().makeNode()
+    EventItem.all().makeNode()
   )
 }
 
 //8080/send_usageevent/startApplication
-drop.get("send_usageevent") { request in
+drop.get("send_usageevent",":eventType") { request in
   
   guard let eventTypeString = request.parameters["eventType"]?.string,
     let eventType = EventType(rawValue: eventTypeString) else {
       throw Abort.badRequest
   }
-  var event = UsageEvent(eventType: eventType)
+  var event = UsageEventItem(eventType: eventType)
   try event.save()
   return try JSON(node: event.makeNode())
 }
 
 drop.get("all_usageevent") { request in
   return try JSON(node:
-    UsageEvent.all().makeNode()
+    UsageEventItem.all().makeNode()
   )
 }
 
