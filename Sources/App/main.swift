@@ -295,10 +295,11 @@ drop.get("recommendations/user_id",":userID") { request in
 
 
 // MARK: - Statistics
-//8080/send_event?eventType=2
-drop.get("send_event") { request in
+
+//8080/send_event/startApplication
+drop.get("send_event",":eventType") { request in
   
-  guard let eventTypeString = request.data["eventType"]?.string,
+  guard let eventTypeString = request.parameters["eventType"]?.string,
     let eventType = EventType(rawValue: eventTypeString) else {
     throw Abort.badRequest
   }
@@ -307,15 +308,17 @@ drop.get("send_event") { request in
   return try JSON(node: event.makeNode())
 }
 
+
 drop.get("all_events") { request in
   return try JSON(node:
     Event.all().makeNode()
   )
 }
 
+//8080/send_usageevent/startApplication
 drop.get("send_usageevent") { request in
   
-  guard let eventTypeString = request.data["eventType"]?.string,
+  guard let eventTypeString = request.parameters["eventType"]?.string,
     let eventType = EventType(rawValue: eventTypeString) else {
       throw Abort.badRequest
   }
