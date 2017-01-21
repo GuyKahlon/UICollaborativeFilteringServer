@@ -308,6 +308,19 @@ drop.get("send_event",":eventType") { request in
   return try JSON(node: event.makeNode())
 }
 
+drop.get("get_event",":eventType") { request in
+  
+  guard let eventTypeString = request.parameters["eventType"]?.string,
+    let eventType = EventType(rawValue: eventTypeString) else {
+      throw Abort.badRequest
+  }
+  let count = try EventItem.query().filter("eventtype", eventType.rawValue).all().count
+  
+  
+  return try JSON(node: [
+    "EventItem: " + eventType.rawValue : "\(count)"
+  ])
+}
 
 drop.get("all_events") { request in
   return try JSON(node:
