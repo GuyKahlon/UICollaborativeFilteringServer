@@ -9,12 +9,10 @@ let drop = Droplet(
   providers: [VaporPostgreSQL.Provider.self]
 )
 
-// MARK: - Data Base Operations
 
+// MARK: - Data Base Operations
 /*
- 
  Return all the objects from DB
- 
 */
 
 drop.get("all") { request in
@@ -22,6 +20,14 @@ drop.get("all") { request in
     UIPreference8.all().makeNode()
   )
 }
+
+drop.get("user_count") { request in
+  return try JSON(node: [
+    "user count: " :
+    "\(UIPreference8.all().count)"
+  ])
+}
+
 
 /*
  
@@ -308,6 +314,8 @@ drop.get("send_event",":eventType") { request in
   return try JSON(node: event.makeNode())
 }
 
+//Return the count for event
+
 drop.get("get_event",":eventType") { request in
   
   guard let eventTypeString = request.parameters["eventType"]?.string,
@@ -327,6 +335,17 @@ drop.get("all_events") { request in
     EventItem.all().makeNode()
   )
 }
+
+drop.get("delete-all-events") { request in
+  
+  let query = try EventItem.query()
+  try query.delete()
+  return try JSON(node: EventItem.all().makeNode())
+}
+
+//////
+
+
 
 //8080/send_usageevent/startApplication
 drop.get("send_usageevent",":eventType") { request in
@@ -360,6 +379,12 @@ drop.get("all_usageevent") { request in
   )
 }
 
+drop.get("delete-all-usage-events") { request in
+  
+  let query = try UsageEventItem.query()
+  try query.delete()
+  return try JSON(node: UsageEventItem.all().makeNode())
+}
 
 //
 ////Delete
